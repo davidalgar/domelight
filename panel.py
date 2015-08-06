@@ -66,4 +66,4 @@ def movey(start, end, x):
         lines.append([x, y])
     return lines
 
-makepanel()
+#makepanel()
