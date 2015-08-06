@@ -52,6 +52,6 @@ makepanel()
 str_lines = []
 
 for point in lines:
-    str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0], point[1], 0))
+    str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0]/20, point[1]/20, 0))
 
 print '[\n' + ',\n'.join(str_lines) + '\n]'
