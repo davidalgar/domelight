@@ -42,6 +42,21 @@ def makepanel():
 
     print '[\n' + ',\n'.join(lines) + '\n]'
 
+def movesteps(steps):
+    lines = []
+    for i in range(len(steps)-1):
+        step = steps[i]
+        next = steps[i+1]
+        lines += movestep(step, next)
+    lines.append(steps[len(steps)-1])
+
+    str_lines = []
+    for point in lines:
+        str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0]/20.0, point[1]/20.0, 0))
+
+    return str_lines
+
+
 def movestep(start, step_one):
     lines = []
     if start[0] != step_one[0]:
@@ -68,4 +83,15 @@ def movey(start, end, x):
         lines.append([x, y])
     return lines
 
-# makepanel()
+#makepanel()
+
+def translate_x(strip):
+    new_strip = []
+    for point in strip:
+        new_strip.append([point[0]*-1, point[1]])
+    return new_strip
+
+def translate_y(strip):
+    new_strip = []
+    for point in strip:
+        new_strip.append([point[0], point[1]*-1])
