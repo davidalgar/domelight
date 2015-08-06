@@ -30,6 +30,7 @@ def makepanel():
     print '4 ' + str(len(lines))
     movestep(bottom_step_one, bottom_step_two)
     print '5 ' +  str(len(lines))
+    lines.append(bottom_step_two)
 
 def movestep(start, step_one):
     if start[0] != step_one[0]:
@@ -43,17 +44,27 @@ def movestep(start, step_one):
 
 def movex(start, end, y):
     print 'x.start: ' + str(start) + '  end: '+ str(end)
-    for x in range(start, end, -1):
+    step = 1
+    if(start>end):
+        step = -1
+    for x in range(start, end, step):
         print 'x: '+str(x)
         lines.append([x, y])
 
 def movey(start, end, x):
     print 'y.start: ' + str(start) + '  end: '+ str(end)
-    for y in range(start, end, -1):
+    step = 1
+    if(start>end):
+        step = -1
+    for y in range(start, end, step):
         print 'y: '+str(y)
         lines.append([x, y])
 
 makepanel()
 
+str_lines = []
+
 for point in lines:
-    print ' ( ' + str(point[0]) + ', ' + str(point[1]) + ', 0)'
+    str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0], point[1], 0))
+
+print '[\n' + ',\n'.join(str_lines) + '\n]'
