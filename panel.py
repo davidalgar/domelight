@@ -9,14 +9,31 @@
 #   (0,0)                       (40,0)
 #
 
-top_start = [0, 40]
-top_step_one = [20, 40]
-top_step_two = [20, 20]
+top_left_corner_a = [35, 0]
+top_left_corner_b = [40, 0]
+top_left_corner_c = [40, 5]
 
-bottom_start = [40, 20]
-bottom_step_one = [20, 20]
-bottom_step_two = [20, 0]
+bottom_right_corner_a = [0, 35]
+bottom_right_corner_b = [0, 40]
+bottom_right_corner_c = [5, 40]
 
+top_left_inside_a = [9, 21]
+top_left_inside_b = [19, 21]
+top_left_inside_c = [19, 31]
+
+top_right_inside_a = [21, 31]
+top_right_inside_b = [21, 21]
+top_right_inside_c = [31, 21]
+
+bottom_left_inside_a = [9, 19]
+bottom_left_inside_b = [19, 19]
+bottom_left_inside_c = [19, 9]
+
+bottom_right_inside_a = [21, 9]
+bottom_right_inside_b = [21, 19]
+bottom_right_inside_c = [31, 19]
+
+lines = []
 
 def makepanel():
     lines = []
@@ -24,21 +41,6 @@ def makepanel():
     lines += movesteps([bottom_start, bottom_step_one, bottom_step_two])
 
     print '[\n' + ',\n'.join(lines) + '\n]'
-
-def movesteps(steps):
-    lines = []
-    for i in range(len(steps)-1):
-        step = steps[i]
-        next = steps[i+1]
-        lines += movestep(step, next)
-    lines.append(steps[len(steps)-1])
-
-    str_lines = []
-    for point in lines:
-        str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0]/20.0, point[1]/20.0, 0))
-
-    return str_lines
-
 
 def movestep(start, step_one):
     lines = []
@@ -66,4 +68,4 @@ def movey(start, end, x):
         lines.append([x, y])
     return lines
 
-#makepanel()
+# makepanel()
