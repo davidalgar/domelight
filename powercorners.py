@@ -1,5 +1,14 @@
 import panel
 
+adjustment = 40
+
+def adjust(list):
+    result = []
+    for i in list:
+        i = [x+adjustment for x in i]
+        result.append(i)
+    return result
+
 one = []
 one.append([35, 0])
 one.append([40, 0])
@@ -32,8 +41,9 @@ six.append([31, 19])
 
 str_lines = []
 str_lines += panel.movesteps(one)
-str_lines += panel.movesteps(two)
+str_lines += panel.movesteps(panel.translate_x(panel.translate_y(one)))
 str_lines += panel.movesteps(three)
-str_lines += panel.movesteps(four)
-str_lines += panel.movesteps(five)
-str_lines += panel.movesteps(six)
+str_lines += panel.movesteps(panel.translate_x(three))
+str_lines += panel.movesteps(panel.translate_y(three))
+str_lines += panel.movesteps(panel.translate_x(panel.translate_y(three)))
+str_lines += panel.movesteps(panel.translate_y(panel.translate_x(three)))
