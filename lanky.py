@@ -15,10 +15,11 @@ two.append([40,40])
 str_lines = []
 str_lines += panel.movesteps(one)
 str_lines += panel.movesteps(two)
-str_lines += panel.movesteps()
+str_lines += panel.movesteps(panel.translate_x(one))
+str_lines += panel.movesteps(panel.translate_x(two))
+str_lines += panel.movesteps(panel.translate_y(one))
+str_lines += panel.movesteps(panel.translate_y(two))
+str_lines += panel.movesteps(panel.translate_x(panel.translate_y(one)))
+str_lines += panel.movesteps(panel.translate_y(panel.translate_x(two)))
 
-
-
-
-str_lines
 print '[\n' + ',\n'.join(str_lines) + '\n]'

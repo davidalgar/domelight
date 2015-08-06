@@ -78,3 +78,4 @@ def translate_y(strip):
     new_strip = []
     for point in strip:
         new_strip.append([point[0], point[1]*-1])
+    return new_strip
