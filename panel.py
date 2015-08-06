@@ -42,15 +42,14 @@ def movestep(start, step_one):
         print 'c'
 
 def movex(start, end, y):
-    s  = min(start,end)
     print 'x.start: ' + str(start) + '  end: '+ str(end)
-    for x in range(start, end):
+    for x in range(start, end, -1):
         print 'x: '+str(x)
         lines.append([x, y])
 
 def movey(start, end, x):
     print 'y.start: ' + str(start) + '  end: '+ str(end)
-    for y in range(start, end):
+    for y in range(start, end, -1):
         print 'y: '+str(y)
         lines.append([x, y])
 
