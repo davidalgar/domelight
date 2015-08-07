@@ -9,22 +9,6 @@
 #   (0,0)                       (40,0)
 #
 
-top_start = [0, 40]
-top_step_one = [20, 40]
-top_step_two = [20, 20]
-
-bottom_start = [40, 20]
-bottom_step_one = [20, 20]
-bottom_step_two = [20, 0]
-
-
-def makepanel():
-    lines = []
-    lines += movesteps([top_start, top_step_one, top_step_two])
-    lines += movesteps([bottom_start, bottom_step_one, bottom_step_two])
-
-    print '[\n' + ',\n'.join(lines) + '\n]'
-
 
 def movesteps(steps):
     lines = []
@@ -106,3 +90,10 @@ def flip_y(strip):
     for point in strip:
         new_strip.append([point[0], -1 * point[1]])
     return new_strip
+
+
+def offset(list, x, y):
+    new_list = []
+    for point in list:
+        new_list.append([point[0] + x, point[1] + y])
+    return new_list
