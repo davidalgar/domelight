@@ -70,8 +70,6 @@ def movey(start, end, x):
     return lines
 
 
-# makepanel()
-
 def translate_x(strip):
     new_strip = []
     for point in strip:
@@ -93,4 +91,18 @@ def rotate90(strip, rotationpoint):
         curpoint = [curpoint[1] * -1, curpoint[0]]
         curpoint = [curpoint[0] - rotationpoint[0], curpoint[1] - rotationpoint[1]]
         new_strip.append(curpoint)
+    return new_strip
+
+
+def flip_x(strip):
+    new_strip = []
+    for point in strip:
+        new_strip.append([-1 * point[0], point[1]])
+    return new_strip
+
+
+def flip_y(strip):
+    new_strip = []
+    for point in strip:
+        new_strip.append([point[0], -1 * point[1]])
     return new_strip
