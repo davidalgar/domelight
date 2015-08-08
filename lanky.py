@@ -1,36 +1,40 @@
 import panel
 
-adjustment = 40
+one = [[0, 0], [0, 19], [19, 19], [19, 0]]
 
-def adjust(list):
-    result = []
-    for i in list:
-        i = [x+adjustment for x in i]
-        result.append(i)
-    return result
+two = [[21, 40], [21, 21], [40, 21], [40, 40]]
 
-one = []
-one.append([0,0])
-one.append([0,20])
-one.append([20,20])
-one.append([20,0])
 
-two = []
-two.append([20,40])
-two.append([20,20])
-two.append([40,20])
-two.append([40,40])
+# panels:
+#
+#    b                 b
+#       2           1
+#          a     a
+#
+#          a     a
+#       4           3
+#     b                 b
+#
+#
+
+
 
 str_lines = []
-str_lines += panel.movesteps(adjust(one))
-str_lines += panel.movesteps(adjust(two))
-str_lines += panel.movesteps(adjust(panel.translate_x(one)))
-str_lines += panel.movesteps(adjust(panel.translate_x(two)))
-str_lines += panel.movesteps(adjust(panel.translate_y(one)))
-str_lines += panel.movesteps(adjust(panel.translate_y(two)))
-str_lines += panel.movesteps(adjust(panel.translate_x(panel.translate_y(one))))
-str_lines += panel.movesteps(adjust(panel.translate_y(panel.translate_x(two))))
+# panel 1
+str_lines += panel.movesteps(panel.offset(one, 1, 1))
+str_lines += panel.movesteps(panel.offset(two, 1, 1))
 
+# panel 2
+str_lines += panel.movesteps(panel.offset(panel.flip_x(one), -1, 1))
+str_lines += panel.movesteps(panel.offset(panel.flip_x(two), -1, 1))
+
+# panel 3
+str_lines += panel.movesteps(panel.offset(panel.flip_y(one), 1, -1))
+str_lines += panel.movesteps(panel.offset(panel.flip_y(two), 1, -1))
+
+# panel 4
+str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(one)), -1, -1))
+str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(two)), -1, -1))
 
 
 print '[\n' + ',\n'.join(str_lines) + '\n]'
