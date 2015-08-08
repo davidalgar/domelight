@@ -81,14 +81,29 @@ print
 
 white = [255, 255, 255]
 red = [255, 0, 0]
-orange = [255, 255, 255]
-yellow = [0, 0, 0]
+orange = [255, 140, 0]
+yellow = [255, 220, 0]
 green = [0, 255, 0]
 blue = [0, 0, 255]
-purple = [0, 0, 0]
+purple = [128, 0, 128]
 off = [0, 0, 0]
 
-# panels:
+light_red = [100,0,0]
+
+
+def put_pixels(c_strip, channel):
+    # TODO swap implementation
+    #client.put_pixels(c_strip, channel=channel)
+    pixels = []
+    for single_strip in strip:
+        for pixel in single_strip:
+            pixels.append(pixel)
+    client.put_pixels(pixels, channel=0)
+
+# -------------------------------------------------------------------------------
+# setup strip model
+
+# strip layout:
 #
 #    b                 b
 #       2           1
@@ -99,9 +114,6 @@ off = [0, 0, 0]
 #     b                 b
 #
 #
-
-# -------------------------------------------------------------------------------
-# setup strip model
 
 strips = [[4, 2],
           [3, 1],
@@ -114,37 +126,41 @@ n_strips = 8
 # init all strips to red
 strip = []
 for n in range(8):
+    strip.append([])
     for y in range(64):
-        strip[0][y] = red
+        strip[n].append(light_red)
+    put_pixels(strip[n], n)
 
 # order of strips to fade when fading
 progression = [1, 4, 8, 5, 2, 3, 7, 6]
-colors = [red, orange, yellow, green, blue, purple, off]
+colors = [red, orange, yellow, green, blue, purple]
+color = 0
 
+
+# -------------------------------------------------------------------------------
+# run pattern
 
 print '    sending pixels forever (control-c to exit)...'
 print
 
 
 def rainbow_fade():
-    start_time = time.time()
     while True:
-        t = time.time() - start_time
-        # fade to new color
+        next_color()
         for i in range(len(progression)):
-            color = next_color()
-            fade_strip(i, color)
-
-        # wait before next fade
-        time.sleep(5)
+            fade_strip(i, colors[color])
 
 
 def fade_strip(strip_index, color):
     for x in range(len(strip[strip_index])):
         strip[strip_index][x] = color
-        client.put_pixels(strip[strip_index], channel=strip_index)
+        put_pixels(strip[strip_index], strip_index)
         time.sleep(1 / options.fps)
 
 
 def next_color():
-    return red
+    global color
+    color = (color + 1) % len(colors)
+
+
+rainbow_fade()
