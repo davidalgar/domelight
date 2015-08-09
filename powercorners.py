@@ -1,49 +1,45 @@
 import panel
 
-adjustment = 40
+one = [[5, 0], [0, 0], [0, 5]]
 
-def adjust(list):
-    result = []
-    for i in list:
-        i = [x+adjustment for x in i]
-        result.append(i)
-    return result
+two = [[35, 40], [40, 40], [40, 35]]
 
-one = []
-one.append([35, 0])
-one.append([40, 0])
-one.append([40, 5])
+three = [[9, 21], [19, 21], [19, 31]]
 
-two = []
-two.append([0, 35])
-two.append([0, 40])
-two.append([5, 40])
+four = [[21, 31], [21, 21], [31, 21]]
 
-three = []
-three.append([9, 21])
-three.append([19, 21])
-three.append([19, 31])
+five = [[9, 19], [19, 19], [19, 9]]
 
-four = []
-four.append([21, 31])
-four.append([21, 21])
-four.append([31, 21])
+six = [[21, 9], [21, 19], [31, 19]]
 
-five = []
-five.append([9, 19])
-five.append([19, 19])
-five.append([19, 9])
+panels = []
+panels += panel.movesteps(panel.offset(one, 1, 1))
+panels += panel.movesteps(panel.offset(two, 1, 1))
+panels += panel.movesteps(panel.offset(three, 1, 1))
+panels += panel.movesteps(panel.offset(four, 1, 1))
+panels += panel.movesteps(panel.offset(five, 1, 1))
+panels += panel.movesteps(panel.offset(six, 1, 1))
 
-six = []
-six.append([21, 9])
-six.append([21, 19])
-six.append([31, 19])
+panels += panel.movesteps(panel.offset(panel.flip_x(one), -1, 1))
+panels += panel.movesteps(panel.offset(panel.flip_x(two), -1, 1))
+panels += panel.movesteps(panel.offset(panel.flip_x(three), -1, 1))
+panels += panel.movesteps(panel.offset(panel.flip_x(four), -1, 1))
+panels += panel.movesteps(panel.offset(panel.flip_x(five), -1, 1))
+panels += panel.movesteps(panel.offset(panel.flip_x(six), -1, 1))
 
-str_lines = []
-str_lines += panel.movesteps(one)
-str_lines += panel.movesteps(panel.translate_x(panel.translate_y(one)))
-str_lines += panel.movesteps(three)
-str_lines += panel.movesteps(panel.translate_x(three))
-str_lines += panel.movesteps(panel.translate_y(three))
-str_lines += panel.movesteps(panel.translate_x(panel.translate_y(three)))
-str_lines += panel.movesteps(panel.translate_y(panel.translate_x(three)))
+
+panels += panel.movesteps(panel.offset(panel.flip_y(one), 1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_y(two), 1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_y(three), 1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_y(four), 1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_y(five), 1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_y(six), 1, -1))
+
+panels += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(one)), -1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(two)), -1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(three)), -1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(four)), -1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(five)), -1, -1))
+panels += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(six)), -1, -1))
+
+print '[\n' + ',\n'.join(panels) + '\n]'
