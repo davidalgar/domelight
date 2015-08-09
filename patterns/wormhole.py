@@ -84,3 +84,5 @@ print
 # run pattern
 
 print '    sending pixels forever (control-c to exit)...'
+
+print coordinates
