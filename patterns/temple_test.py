@@ -13,6 +13,11 @@ Usage:
 """
 
 from __future__ import division
+
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
+
 import random
 import time
 import sys
