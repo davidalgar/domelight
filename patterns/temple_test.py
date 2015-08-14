@@ -97,13 +97,12 @@ light_red = [100, 0, 0]
 
 
 def put_pixels(c_strip, channel):
-    # TODO swap implementation
-    # client.put_pixels(c_strip, channel=channel)
-    pixels = []
-    for single_strip in strip:
-        for pixel in single_strip:
-            pixels.append(pixel)
-    client.put_pixels(pixels, channel=0)
+    client.put_pixels(c_strip, channel=channel)
+    #pixels = []
+    #for single_strip in strip:
+    #    for pixel in single_strip:
+    #        pixels.append(pixel)
+    #client.put_pixels(pixels, channel=0)
 
 
 # -------------------------------------------------------------------------------
@@ -131,12 +130,13 @@ n_strips = 8
 strip_length = 64
 
 # init all strips to red
-strip = []
-for n in range(n_strips):
-    strip.append([])
-    for y in range(strip_length):
-        strip[n].append(light_red)
-    put_pixels(strip[n], n)
+def initialize_light_red():
+    strip = []
+    for n in range(n_strips):
+        strip.append([])
+        for y in range(strip_length):
+            strip[n].append(light_red)
+        put_pixels(strip[n], n)
 
 # order of strips to fade when fading
 progression = [1, 4, 0, 5, 2, 3, 7, 6]
