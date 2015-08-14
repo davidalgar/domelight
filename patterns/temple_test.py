@@ -139,9 +139,12 @@ for n in range(n_strips):
     put_pixels(strip[n], n)
 
 # order of strips to fade when fading
-progression = [1, 4, 8, 5, 2, 3, 7, 6]
+progression = [1, 4, 0, 5, 2, 3, 7, 6]
 colors = [red, orange, yellow, green, blue, purple]
 color = 0
+
+panel = 0
+panels = [0, 1, 2, 3]
 
 
 # -------------------------------------------------------------------------------
@@ -153,7 +156,7 @@ def rainbow_fade():
     while True:
         next_color()
         for i in range(len(progression)):
-            fade_strip(i, colors[color])
+            fade_strip(progression[i], colors[color])
 
 
 def fade_strip(strip_index, color):
@@ -169,3 +172,43 @@ def next_color():
 
 
 rainbow_fade()
+
+
+# ----------------------------------------------------------
+# showcase pattern
+
+def show_tiger():
+    tiger_strips = [0, 1]
+    show_panel(tiger_strips)
+
+
+def show_elephant():
+    elephant_strips = [1, 2]
+    show_panel(elephant_strips)
+
+
+def show_nautilus():
+    nautilus_strips = [1, 2]
+    show_panel(nautilus_strips)
+
+
+def show_octopus():
+    octopus_strips = [1, 2]
+    show_panel(octopus_strips)
+
+
+def show_panel(panel_strips):
+    for n in range(n_strips):
+        for x in range(strip_length):
+            if n in panel_strips:
+                strips[n][x] = orange
+            else:
+                strips[n][x] = off
+
+
+def panel_spotlight():
+    while True:
+        show_tiger()
+        show_elephant()
+        show_nautilus()
+        show_octopus()
