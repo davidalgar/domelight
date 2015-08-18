@@ -153,19 +153,35 @@ print '    sending pixels forever (control-c to exit)...'
 
 def rainbow_fade():
     global strip
+    print "FADE"
     while True:
+        print "1"
         next_color()
+        print range(len(strip))
         for i in range(len(strip)):
-            fade_strip(progression[i], colors[color])
-
+            print "i: "+str(i)
+            if i % 2 == 0:
+                print "fade strip " + str(i)
+                fade_strip(progression[i], colors[color])
 
 def fade_strip(strip_index, color):
     global strip
-    for t in range(0,100):
+    start_color = strip[strip_index][0]
+    delta_x = (color[0] - start_color[0])
+    delta_g = (color[1] - start_color[1])
+    delta_b = (color[2] - start_color[2])
+    print "from " + str(start_color) + " to " + str(color) + "  dx: " + str(delta_x) + " dg: " + str(delta_g) + " db: " + str(delta_b)
+    for t in range(0, 11):
+        if t < 10:
+            anim_color = [start_color[0] + (delta_x/10)*t, start_color[1] + (delta_g / 10)*t, start_color[2] + (delta_b / 10)*t]
+        else:
+            anim_color = color
         for x in range(len(strip[strip_index])):
-            strip[strip_index][x] = color
-            put_pixels(strip[strip_index], strip_index)
-            time.sleep(1 / options.fps)
+            strip[strip_index][x] = anim_color
+            strip[strip_index+1][x] = anim_color
+        put_pixels(strip[strip_index], strip_index)
+        put_pixels(strip[strip_index+1], strip_index+1)
+        time.sleep(1 / 2)
 
 
 def next_color():
