@@ -10,15 +10,20 @@ import panel
 # two = [[21, 40], [21, 21], [40, 21], [40, 40]]
 
 
-one = [[40, 10], [40, 0], [30, 0]]
+one = [[60, 20], [60, 0], [45, 0]]
 
-two = [[10, 0], [0, 0], [0, 10]]
+two = [[15, 0], [0, 0], [0, 20]]
 
-three = [[0, 30], [0, 40], [10, 40]]
+three = [[0, 45], [0, 60], [15, 60]]
 
-four = [[30, 40], [40, 40], [40, 30]]
+four = [[45, 60], [60, 60], [60, 45]]
 
-five = [[21, 10], [21, 30], [20, 30], [20, 21], [10, 21], [10, 20], [30, 20], [30, 21], [20, 21], [20, 10]]
+# 21 = 32
+# 10 = 15
+# 20 = 30
+# 30 = 45
+
+five = [[32, 15], [32, 45], [30, 45], [30, 32], [15, 32], [15, 30], [45, 30], [45, 32], [30, 32], [30, 15]]
 
 # panel:
 #
@@ -32,7 +37,7 @@ five = [[21, 10], [21, 30], [20, 30], [20, 21], [10, 21], [10, 20], [30, 20], [3
 #  (0,0)               (40,0)
 #
 
-# panels:
+# all panels ( i think?)
 #
 #    b                 b
 #       2           1
@@ -44,27 +49,28 @@ five = [[21, 10], [21, 30], [20, 30], [20, 21], [10, 21], [10, 20], [30, 20], [3
 #
 #
 
-
-
 str_lines = []
+
 # panel 1
-str_lines += panel.movesteps(panel.offset(one, 1, 1))
-str_lines += panel.movesteps(panel.offset(two, 1, 1))
-str_lines += panel.movesteps(panel.offset(three, 1, 1))
-str_lines += panel.movesteps(panel.offset(four, 1, 1))
-str_lines += panel.movesteps(panel.offset(five, 1, 1))
+for list in [one, two, three, four, five]:
+    str_lines += panel.movesteps(panel.offset(list, 1, 1))
+    str_lines = str_lines[:-2]
 
 # panel 2
-#str_lines += panel.movesteps(panel.offset(panel.flip_x(one), -1, 1))
-#str_lines += panel.movesteps(panel.offset(panel.flip_x(two), -1, 1))
+for list in [one, two, three, four, five]:
+    str_lines += panel.movesteps(panel.offset(panel.flip_x(list), -1, 1))
+    str_lines = str_lines[:-2]
 
 # panel 3
-#str_lines += panel.movesteps(panel.offset(panel.flip_y(one), 1, -1))
-#str_lines += panel.movesteps(panel.offset(panel.flip_y(two), 1, -1))
+for list in [one, two, three, four, five]:
+    str_lines += panel.movesteps(panel.offset(panel.flip_y(list), 1, -1))
+    str_lines = str_lines[:-2]
 
 # panel 4
-#str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(one)), -1, -1))
-#str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(two)), -1, -1))
+for list in [one, two, three, four, five]:
+    str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(list)), -1, -1))
+    str_lines = str_lines[:-2]
+
 
 print '[\n' + ',\n'.join(str_lines) + '\n]'
 

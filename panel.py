@@ -20,7 +20,7 @@ def movesteps(steps):
 
     str_lines = []
     for point in lines:
-        str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0] / 20.0, point[1] / 20.0, 0))
+        str_lines.append('  {"point": [%.2f, %.2f, %.2f]}' % (point[0] / 30.0, point[1] / 30.0, 0))
 
     return str_lines
 
@@ -36,9 +36,9 @@ def movestep(start, step_one):
 
 def movex(start, end, y):
     lines = []
-    step = 1
-    if (start > end):
-        step = -1
+    step = 2
+    if start > end:
+        step = -2
     for x in range(start, end, step):
         lines.append([x, y])
     return lines
@@ -46,9 +46,9 @@ def movex(start, end, y):
 
 def movey(start, end, x):
     lines = []
-    step = 1
-    if (start > end):
-        step = -1
+    step = 2
+    if start > end:
+        step = -2
     for y in range(start, end, step):
         lines.append([x, y])
     return lines
