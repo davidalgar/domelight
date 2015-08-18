@@ -119,23 +119,17 @@ def put_pixels(c_strip, channel):
 #     b                 b
 #
 #
-
-strips = [[4, 2],
-          [3, 1],
-          [7, 5],
-          [8, 6]
-          ]
-
 n_strips = 8
 strip_length = 64
 
+strip = []
+
 # init all strips to red
-def initialize_light_red():
-    strip = []
+def init_strip(color):
     for n in range(n_strips):
         strip.append([])
         for y in range(strip_length):
-            strip[n].append(light_red)
+            strip[n].append(color)
         put_pixels(strip[n], n)
 
 # order of strips to fade when fading
@@ -155,7 +149,7 @@ print '    sending pixels forever (control-c to exit)...'
 def rainbow_fade():
     while True:
         next_color()
-        for i in range(len(progression)):
+        for i in range(len(strip)):
             fade_strip(progression[i], colors[color])
 
 

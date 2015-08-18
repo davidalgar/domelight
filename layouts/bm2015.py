@@ -73,5 +73,3 @@ for list in [one, two, three, four, five]:
 
 
 print '[\n' + ',\n'.join(str_lines) + '\n]'
-
-print str(len(str_lines))
