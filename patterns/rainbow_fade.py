@@ -88,9 +88,9 @@ print
 white = [255, 255, 255]
 red = [255, 0, 0]
 orange = [255, 140, 0]
-yellow = [255, 220, 0]
+yellow = [255, 255, 5]
 green = [0, 255, 0]
-blue = [0, 0, 255]
+blue = [15, 15, 200]
 dark_blue = [0, 0, 255]
 elephant_blue = [25,25,50]
 purple = [128, 0, 128]
@@ -154,11 +154,10 @@ print '    sending pixels forever (control-c to exit)...'
 def rainbow_fade():
     global strip
     while True:
-        next_color()
         print range(len(strip))
         for i in range(len(strip)):
             if i % 2 == 0:
-                print
+                next_color()
                 fade_strip(progression[i], colors[color])
 
 def fade_strip(strip_index, color):
@@ -167,8 +166,6 @@ def fade_strip(strip_index, color):
     delta_x = (color[0] - start_color[0])
     delta_g = (color[1] - start_color[1])
     delta_b = (color[2] - start_color[2])
-    print "index " + str(strip_index) + " , " + str(len(strip))
-    print "from " + str(start_color) + " to " + str(color) + "  dx: " + str(delta_x) + " dg: " + str(delta_g) + " db: " + str(delta_b)
     for t in range(0, 11):
         if t < 10:
             anim_color = [start_color[0] + (delta_x/10)*t, start_color[1] + (delta_g / 10)*t, start_color[2] + (delta_b / 10)*t]
@@ -179,7 +176,7 @@ def fade_strip(strip_index, color):
             strip[strip_index+1][x] = anim_color
         put_pixels(strip[strip_index], strip_index)
         put_pixels(strip[strip_index+1], strip_index+1)
-        time.sleep(1 / 5)
+        time.sleep(1 / 20)
 
 
 def next_color():
@@ -187,52 +184,3 @@ def next_color():
     color = (color + 1) % len(colors)
 
 rainbow_fade()
-
-# ----------------------------------------------------------
-# showcase pattern
-
-def show_tiger():
-    tiger_strips = [0, 1]
-    show_panel(tiger_strips, orange)
-
-
-def show_elephant():
-    elephant_strips = [2, 3]
-    show_panel(elephant_strips, elephant_blue)
-
-
-def show_nautilus():
-    nautilus_strips = [4,5]
-    show_panel(nautilus_strips, dark_blue)
-
-
-def show_octopus():
-    octopus_strips = [6,7]
-    show_panel(octopus_strips, red)
-
-
-def show_panel(panel_strips, color):
-    global strip
-    global strip_length
-    global n_strips
-    for n in range(n_strips):
-        for x in range(strip_length):
-            if n in panel_strips:
-                strip[n][x] = color
-            else:
-                strip[n][x] = off
-        put_pixels(strip[n], 0)
-
-
-def panel_spotlight():
-    while True:
-        show_tiger()
-        time.sleep(5)
-        show_elephant()
-        time.sleep(5)
-        show_octopus()
-        time.sleep(5)
-        show_nautilus()
-        time.sleep(5)
-
-#panel_spotlight()
