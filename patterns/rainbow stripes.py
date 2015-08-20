@@ -24,7 +24,7 @@ import sys
 import optparse
 
 import opc
-import color_utils
+import bm2015_utils
 
 try:
     import json
@@ -113,17 +113,13 @@ def put_pixels(c_strip, channel):
 
 # strip layout:
 #
-#    a2       a3     a3        a2
+#    b                 b
+#       2           1
+#          a     a
 #
-#        2 b             1 b
-#
-#    a1       a4     a4        a1
-#
-#    a1        a4     a4       a1
-#
-#        3 b             4 b
-#
-#    a2        a3     a3       a2
+#          a     a
+#       3           4
+#     b                 b
 #
 #
 n_strips = 8
@@ -157,30 +153,11 @@ print '    sending pixels forever (control-c to exit)...'
 
 def rainbow_fade():
     global strip
+    global color
     while True:
-        for i in range(1):
-            if i % 2 == 0:
-                next_color()
-                fade_strip(progression[i], colors[color])
-
-def fade_strip(strip_index, color):
-    global strip
-    start_color = strip[strip_index][0]
-    delta_r = (color[0] - start_color[0])
-    delta_g = (color[1] - start_color[1])
-    delta_b = (color[2] - start_color[2])
-    for t in range(0, 11):
-        if t < 10:
-            anim_color = [start_color[0] + (delta_r/10)*t, start_color[1] + (delta_g / 10)*t, start_color[2] + (delta_b / 10)*t]
-        else:
-            anim_color = color
-        for x in range(len(strip[strip_index])):
-            strip[strip_index][x] = anim_color
-            #strip[strip_index+1][x] = anim_color
-        put_pixels(strip[strip_index], strip_index)
-        #put_pixels(strip[strip_index+1], strip_index+1)
-        time.sleep(1 / 20)
-
+        for diag_strip in range(5):
+            next_color()
+            bm2015_utils.color_diagonal_strip(diag_strip, color, strip)
 
 def next_color():
     global color
