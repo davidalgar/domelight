@@ -5,48 +5,40 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
 import panel
 
-# one = [[0, 0], [0, 19], [19, 19], [19, 0]]
+one = [[45, 0], [60, 0], [60, 20]]
 
-# two = [[21, 40], [21, 21], [40, 21], [40, 40]]
+two = [[60, 45], [60, 60], [45, 60]]
 
+three = [[15, 60], [0, 60], [0, 45]]
 
-one = [[60, 20], [60, 0], [45, 0]]
-
-two = [[15, 0], [0, 0], [0, 20]]
-
-three = [[0, 45], [0, 60], [15, 60]]
-
-four = [[45, 60], [60, 60], [60, 45]]
-
-# 21 = 32
-# 10 = 15
-# 20 = 30
-# 30 = 45
+four = [[0, 15], [0, 0], [15, 0]]
 
 five = [[32, 15], [32, 45], [30, 45], [30, 32], [15, 32], [15, 30], [45, 30], [45, 32], [30, 32], [30, 15]]
 
 # panel:
 #
 #
-#  (0,40)              (40,40)
+#  (0,60)              (60,60)
 #
 #
-#           (20,20)
+#           (30,30)
+#                       (60,15)
 #
-#
-#  (0,0)               (40,0)
-#
+#  (0,0)               (60,0)
 
-# all panels ( i think?)
+# all panels:
 #
-#    b                 b
-#       2           1
-#          a     a
+#    a2       a3     a3        a2
 #
-#          a     a
-#       4           3
-#     b                 b
+#        2 b             1 b
 #
+#    a1       a4     a4        a1
+#
+#    a1        a4     a4       a1
+#
+#        3 b             4 b
+#
+#    a2        a3     a3       a2
 #
 
 str_lines = []
@@ -63,12 +55,12 @@ for list in [one, two, three, four, five]:
 
 # panel 3
 for list in [one, two, three, four, five]:
-    str_lines += panel.movesteps(panel.offset(panel.flip_y(list), 1, -1))
+    str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(list)), -1, -1))
     str_lines = str_lines[:-2]
 
 # panel 4
 for list in [one, two, three, four, five]:
-    str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(list)), -1, -1))
+    str_lines += panel.movesteps(panel.offset(panel.flip_y(list), 1, -1))
     str_lines = str_lines[:-2]
 
 

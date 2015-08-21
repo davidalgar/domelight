@@ -118,7 +118,7 @@ def put_pixels(c_strip, channel):
 #          a     a
 #
 #          a     a
-#       3           4
+#       4           3
 #     b                 b
 #
 #
@@ -138,13 +138,13 @@ def init_strip(color):
 
 # order of strips to fade when fading
 progression = [4, 5, 0, 1, 2, 3, 6, 7]
-colors = [red, orange, yellow, green, blue, purple]
+colors = [red, orange, yellow, green, blue]
 color = 0
 
 panel = 0
 panels = [0, 1, 2, 3]
 
-init_strip(white)
+init_strip(light_red)
 
 # -------------------------------------------------------------------------------
 # run pattern
@@ -157,10 +157,20 @@ def rainbow_fade():
     while True:
         for diag_strip in range(5):
             next_color()
-            bm2015_utils.color_diagonal_strip(diag_strip, color, strip)
+            strip = bm2015_utils.color_diagonal_strip(diag_strip, colors[color], strip)
+            for x in range(len(strip)):
+                put_pixels(strip[x], x)
+            time.sleep(1)
+        time.sleep(1)
 
 def next_color():
     global color
     color = (color + 1) % len(colors)
 
 rainbow_fade()
+
+#strip[4][0] = white
+#strip[4][17] = white
+#strip[4][32] = white
+#strip[4][47] = white
+#put_pixels(strip[4],3)

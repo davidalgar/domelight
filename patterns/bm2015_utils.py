@@ -16,6 +16,9 @@ __author__ = 'david.algar'
 #    a1        a2     a2       a1
 #
 
+# returns a list of panels, size 4
+#   each panel in the list is a list of size 5 sections - 4 corners, followed by the center
+#     each entry is a tuple - (first_led, last_led) representing the range of pixels for that section
 def get_panels():
     panels = []
 
@@ -26,42 +29,48 @@ def get_panels():
                        (base + 64, base + 127)]
     return panels
 
-
+# Returns 5 diagonal "strips" that can be colored to make cool patterns
 def diagonal_strips():
     panels = get_panels()
 
     strips = []
 
     # top left corner
-    strips.append([panels[1][1]])
-    print "Panels: "+str(panels[1][1])
-    print "strips: "+str(strips)
+    strips.append([])
+    strips[0] = [panels[1][1]]
 
-    # next strip
-    strips.append(panels[2][0] + panels[1][0] + panels[1][4] + panels[1][2] + panels[0][2])
+    # next strip  (do them this way)
+    strips.append([])
+    strips[1] = [panels[2][0]] + [panels[1][0]] + [panels[1][4]] + [panels[1][2]] + [panels[0][2]]
 
     #middle, biggest strip
-    strips.append(panels[2][1] + panels[2][4] + panels[2][3] + panels [3][3] + panels[0][3] + panels[1][3] + panels[0][4] + panels[0][1])
+    strips.append([])
+    strips[2] = [panels[2][1]] + [panels[2][4]] + [panels[2][3]] + [panels[3][3]] + [panels[0][3]] + [panels[1][3]] + [panels[0][4]] + [panels[0][1]]
 
     #next strip
-    strips.append(panels[2][2] + panels[3][2] + panels[3][4] + panels[3][0] + panels[0][0])
+    strips.append([])
+    strips[3] = [panels[2][2]] + [panels[3][2]] + [panels[3][4]] + [panels[3][0]] + [panels[0][0]]
 
     #bottom right corner
-    strips.append(panels[3][1])
-
-    print "Len Strips: "+str(len(strips))
-    print "Len Strips[0] "+str(len(strips[0]))
+    strips.append([])
+    strips[4] = [panels[3][1]]
 
     return strips
 
+# Returns a matrix representing the 16 'pixels' of the panels
+def pixel_grid():
+    return []
 
 def color_diagonal_strip(strip_index, color, pixels):
     strips = diagonal_strips()
 
     strip = strips[strip_index]
 
+    print "Turning " + str(strip_index) + " " + str(color)
+
     for i in range(len(strip)):
-        print "strip["+str(i) + "]"+ str(strip[i])
         for x in range(strip[i][0], strip[i][1]+1):
-            pixels[x] = color
+            substrip = x / 64
+            pixel_index = x % 64
+            pixels[substrip][pixel_index] = color
     return pixels
