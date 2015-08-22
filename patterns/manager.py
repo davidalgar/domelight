@@ -21,7 +21,7 @@ def gethour():
     return 1
 
 #quick test to identify strips
-panel_test.main()
+panel_test.panel_test()
 
 while True:
     hr = gethour()

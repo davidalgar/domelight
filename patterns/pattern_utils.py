@@ -17,10 +17,16 @@ strip_length = 64
 
 client = 0
 
+fps = 30
+
 
 # call this before using any other util functions
-def init():
-    parseOpts()
+def init(parseOpts = True):
+    if parseOpts():
+        parseOpts()
+    else:
+        #TODO we'll come here when using a pattern as a module
+        fps = 30
     connectToServer()
     return init_strip()
 
