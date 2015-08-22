@@ -63,7 +63,11 @@ def main(parseOpts = False):
 
 def fade_to(color):
     global strip
+
     start_color = strip[0][0]
+
+    print "Fading to "+str(color) + " from " + str(start_color  )
+
     anim_colors = utils.get_rainbow_fade(start_color, color, utils.fps)
     for t in range(utils.fps):
         if t < utils.fps-1:
@@ -74,7 +78,7 @@ def fade_to(color):
             for x in range(len(strip[strip_index])):
                 strip[strip_index][x] = anim_color
             utils.put_pixels(strip, strip_index)
-        time.sleep(1 / utils.fps)
+        time.sleep(2 / utils.fps)
 
 def next_color():
     global color
