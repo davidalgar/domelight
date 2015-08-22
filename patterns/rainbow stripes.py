@@ -169,8 +169,16 @@ def next_color():
 
 rainbow_fade()
 
-#strip[4][0] = white
-#strip[4][17] = white
-#strip[4][32] = white
-#strip[4][47] = white
-#put_pixels(strip[4],3)
+# strip[0][0] = white
+# strip[1][0] = white
+# strip[2][0] = white
+# strip[2][15] = white
+# strip[3][0] = white
+# #strip[4][17] = white
+# #strip[4][32] = white
+# #strip[4][47] = white
+# put_pixels(strip[0],1)
+# put_pixels(strip[1],2)
+# put_pixels(strip[2],3)
+# put_pixels(strip[3],4)
+# put_pixels(strip[4],5)

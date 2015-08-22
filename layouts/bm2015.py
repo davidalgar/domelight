@@ -45,23 +45,32 @@ str_lines = []
 
 # panel 1
 for list in [one, two, three, four, five]:
-    str_lines += panel.movesteps(panel.offset(list, 1, 1))
-    str_lines = str_lines[:-2]
+    if list == five:
+        str_lines += panel.movesteps(panel.offset(list, 1, 1), 64)
+    else:
+        str_lines += panel.movesteps(panel.offset(list, 1, 1), 16)
 
 # panel 2
 for list in [one, two, three, four, five]:
-    str_lines += panel.movesteps(panel.offset(panel.flip_x(list), -1, 1))
-    str_lines = str_lines[:-2]
+
+    if list == five:
+        str_lines += panel.movesteps(panel.offset(panel.flip_x(list), -1, 1), 64)
+    else:
+        str_lines += panel.movesteps(panel.offset(panel.flip_x(list), -1, 1), 16)
 
 # panel 3
 for list in [one, two, three, four, five]:
-    str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(list)), -1, -1))
-    str_lines = str_lines[:-2]
+    if list == five:
+        str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(list)), -1, -1), 64)
+    else:
+        str_lines += panel.movesteps(panel.offset(panel.flip_x(panel.flip_y(list)), -1, -1), 16)
 
 # panel 4
 for list in [one, two, three, four, five]:
-    str_lines += panel.movesteps(panel.offset(panel.flip_y(list), 1, -1))
-    str_lines = str_lines[:-2]
+    if list == five:
+        str_lines += panel.movesteps(panel.offset(panel.flip_y(list), 1, -1), 64)
+    else:
+        str_lines += panel.movesteps(panel.offset(panel.flip_y(list), 1, -1), 16)
 
 
 print '[\n' + ',\n'.join(str_lines) + '\n]'

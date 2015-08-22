@@ -10,13 +10,16 @@
 #
 
 
-def movesteps(steps):
+def movesteps(steps, maxLEDs):
     lines = []
     for i in range(len(steps) - 1):
         step = steps[i]
         next = steps[i + 1]
         lines += movestep(step, next)
     lines.append(steps[len(steps) - 1])
+
+    while len(lines) > maxLEDs:
+        lines.pop(len(lines)-1)
 
     str_lines = []
     for point in lines:
