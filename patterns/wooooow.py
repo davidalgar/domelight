@@ -18,13 +18,14 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
-import random
 import time
 import sys
 import optparse
 
 import opc
 import bm2015_utils
+import numpy as np
+
 
 try:
     import json
@@ -86,7 +87,7 @@ print
 # color variables (TODO share)
 
 white = [255, 255, 255]
-red = [255, 0, 0]
+red = (255, 0, 0)
 orange = [255, 97, 0]
 yellow = [255, 255, 5]
 green = [0, 255, 0]
@@ -164,20 +165,16 @@ def next_color():
     global color
     color = (color + 1) % len(colors)
 
-white_wipe()
 
-rainbow_fade()
 
-# strip[0][0] = white
-# strip[1][0] = white
-# strip[2][0] = white
-# strip[2][15] = white
-# strip[3][0] = white
-# #strip[4][17] = white
-# #strip[4][32] = white
-# #strip[4][47] = white
-# put_pixels(strip[0],1)
-# put_pixels(strip[1],2)
-# put_pixels(strip[2],3)
-# put_pixels(strip[3],4)
-# put_pixels(strip[4],5)
+def lighter(color, percent):
+    '''assumes color is rgb between (0, 0, 0) and (255, 255, 255)'''
+    color = np.array(color)
+    white = np.array([255, 255, 255])
+    vector = white-color
+    return color + vector * percent
+
+print "Red: " + str(red)
+
+for x in range(8):
+    print "red " + str(x) + ": " + str(lighter(red, .5))

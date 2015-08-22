@@ -172,28 +172,36 @@ def next_color():
     global color
     color = (color + 1) % len(colors)
 
-rainbow_fade()
+#rainbow_fade()
 
 # ----------------------------------------------------------
 # showcase pattern
 
 def show_tiger():
-    tiger_strips = [0, 1]
+    tiger_strips = [6,7]
+    show_panel(tiger_strips, white)
+    time.sleep(1/2)
     show_panel(tiger_strips, orange)
 
 
 def show_elephant():
     elephant_strips = [2, 3]
+    show_panel(elephant_strips, white)
+    time.sleep(1/2)
     show_panel(elephant_strips, elephant_blue)
 
 
 def show_nautilus():
     nautilus_strips = [4,5]
+    show_panel(nautilus_strips, white)
+    time.sleep(1/2)
     show_panel(nautilus_strips, dark_blue)
 
 
 def show_octopus():
-    octopus_strips = [6,7]
+    octopus_strips = [0, 1]
+    show_panel(octopus_strips, white)
+    time.sleep(1/2)
     show_panel(octopus_strips, red)
 
 
@@ -221,4 +229,4 @@ def panel_spotlight():
         show_nautilus()
         time.sleep(5)
 
-#panel_spotlight()
+panel_spotlight()

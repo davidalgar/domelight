@@ -186,4 +186,6 @@ def next_color():
     global color
     color = (color + 1) % len(colors)
 
-rainbow_fade()
+
+if __name__ == "__main__":
+    rainbow_fade()

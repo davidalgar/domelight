@@ -59,7 +59,8 @@ def diagonal_strips():
 
 # Returns a matrix representing the 16 'pixels' of the panels
 def pixel_grid():
-    return []
+    grid = [[0 for x in range(4)] for x in range(5)]
+    return grid
 
 def color_diagonal_strip(strip_index, color, pixels):
     strips = diagonal_strips()
