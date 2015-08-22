@@ -20,8 +20,13 @@ onehour = 1000 * 60 * 60
 def gethour():
     return 1
 
+#quick test to identify strips
+panel_test.main()
+
 while True:
     hr = gethour()
     if hr == 1 or hr == 2:
-        rainbow_fade.rainbow_fade()
+        rainbow_fade.main()
+    if hr == 3 or hr == 4:
+        rainbow_diag_stripes.main()
     time.sleep(onehour)

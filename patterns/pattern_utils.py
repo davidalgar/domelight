@@ -73,6 +73,18 @@ def parseOpts():
             coordinates.append(tuple(item['point']))
     return coordinates
 
+# init all strips to red
+def color_strip_everyother(color):
+    strip = []
+    for n in range(n_strips):
+        strip.append([])
+        for y in range(strip_length):
+            if y % 2 == 0:
+                strip[n].append(color)
+            else:
+                strip[n].append([0, 0, 0])
+        put_pixels(strip, n)
+    return strip
 
 def init_strip(color=None, put=False):
     if not color:

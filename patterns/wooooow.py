@@ -16,165 +16,77 @@ from __future__ import division
 
 import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
 import time
-import sys
-import optparse
+import pattern_utils as utils
 
-import opc
-import bm2015_utils
-import numpy as np
-
-
-try:
-    import json
-except ImportError:
-    import simplejson as json
-
-
-# -------------------------------------------------------------------------------
-# command line
-
-parser = optparse.OptionParser()
-parser.add_option('-l', '--layout', dest='layout',
-                  action='store', type='string',
-                  help='layout file')
-parser.add_option('-s', '--server', dest='server', default='127.0.0.1:7890',
-                  action='store', type='string',
-                  help='ip and port of server')
-# 32fps default will get through 1 strip of 64 in exactly 2s
-parser.add_option('-f', '--fps', dest='fps', default=32,
-                  action='store', type='int',
-                  help='frames per second')
-
-options, args = parser.parse_args()
-
-if not options.layout:
-    parser.print_help()
-    print
-    print 'ERROR: you must specify a layout file using --layout'
-    print
-    sys.exit(1)
-
-
-# -------------------------------------------------------------------------------
-# parse layout file
-
-print
-print '    parsing layout file'
-print
-
-coordinates = []
-for item in json.load(open(options.layout)):
-    if 'point' in item:
-        coordinates.append(tuple(item['point']))
-
-
-# -------------------------------------------------------------------------------
-# connect to server
-
-client = opc.Client(options.server)
-if client.can_connect():
-    print '    connected to %s' % options.server
-else:
-    # can't connect, but keep running in case the server appears later
-    print '    WARNING: could not connect to %s' % options.server
-print
-
-
-# -------------------------------------------------------------------------------
-# color variables (TODO share)
+strip = []
 
 white = [255, 255, 255]
-red = (255, 0, 0)
-orange = [255, 97, 0]
+red = [255, 0, 0]
+orange = [255, 140, 0]
 yellow = [255, 255, 5]
 green = [0, 255, 0]
 blue = [15, 15, 200]
 dark_blue = [0, 0, 255]
-elephant_blue = [25,25,50]
+elephant_blue = [25, 25, 50]
 purple = [128, 0, 128]
 off = [0, 0, 0]
-
 light_red = [100, 0, 0]
 
 
-def put_pixels(c_strip, channel):
-    #client.put_pixels(c_strip, channel=channel)
-    pixels = []
-    for single_strip in strip:
-        for pixel in single_strip:
-            pixels.append(pixel)
-    client.put_pixels(pixels, channel=0)
-
-
-# -------------------------------------------------------------------------------
-# setup strip model
-
-n_strips = 8
-strip_length = 64
-
-strip = []
-
+# order of strips to fade when fading
 colors = [red, orange, yellow, green, blue, purple]
 color = 0
 
 panel = 0
 panels = [0, 1, 2, 3]
 
-# init all strips to red
-def init_strip(color):
-    global strip
-    for n in range(n_strips):
-        strip.append([])
-        for y in range(strip_length):
-            strip[n].append(color)
-        #put_pixels(strip[n], n)
-
-
-init_strip(off)
-
 
 # -------------------------------------------------------------------------------
 # run pattern
 
-print '    sending pixels forever (control-c to exit)...'
-
-def rainbow_fade():
+def main():
     global strip
-    global color
+
+    print '    sending pixels forever (control-c to exit)...'
+
+    strip = utils.init()
+    print "OK"
+
     while True:
-        for diag_strip in range(5):
-            next_color()
-            strip = bm2015_utils.color_diagonal_strip(diag_strip, colors[color], strip)
-            for x in range(len(strip)):
-                put_pixels(strip[x], x)
-            time.sleep(1 / 10)
+        for i in range(utils.n_strips):
+            if i % 2 == 0:
+                next_color()
+                fade_strip(i, colors[color])
 
-def white_wipe():
+
+def fade_strip(strip_index, color):
     global strip
-    global color
-    for diag_strip in range(5):
-        strip = bm2015_utils.color_diagonal_strip(diag_strip, white, strip)
-        for x in range(len(strip)):
-            put_pixels(strip[x], x)
-        time.sleep(1 / 4)
+    start_color = strip[strip_index][0]
+    delta_r = (color[0] - start_color[0])
+    delta_g = (color[1] - start_color[1])
+    delta_b = (color[2] - start_color[2])
+    for t in range(0, 11):
+        if t < 10:
+            anim_color = [int(start_color[0] + (delta_r / 10) * t), int(start_color[1] + (delta_g / 10) * t),
+                          int(start_color[2] + (delta_b / 10) * t)]
+        else:
+            anim_color = color
+        for x in range(len(strip[strip_index])):
+            strip[strip_index][x] = anim_color
+            strip[strip_index + 1][x] = anim_color
+        utils.put_pixels(strip, strip_index)
+        utils.put_pixels(strip, strip_index + 1)
+        time.sleep(1 / 20)
+
 
 def next_color():
     global color
     color = (color + 1) % len(colors)
 
 
-
-def lighter(color, percent):
-    '''assumes color is rgb between (0, 0, 0) and (255, 255, 255)'''
-    color = np.array(color)
-    white = np.array([255, 255, 255])
-    vector = white-color
-    return color + vector * percent
-
-print "Red: " + str(red)
-
-for x in range(8):
-    print "red " + str(x) + ": " + str(lighter(red, .5))
+if __name__ == "__main__":
+    main()
