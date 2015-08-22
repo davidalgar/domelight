@@ -6,7 +6,8 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 import opc
-
+from colorsys import hsv_to_rgb, rgb_to_hsv
+import math
 try:
     import json
 except ImportError:
@@ -21,8 +22,8 @@ fps = 30
 
 
 # call this before using any other util functions
-def init(parseOpts = True):
-    if parseOpts():
+def init(parse = True):
+    if parse:
         parseOpts()
     else:
         #TODO we'll come here when using a pattern as a module
@@ -105,3 +106,29 @@ def init_strip(color=None, put=False):
         if (put):
             put_pixels(strip, n)
     return strip
+
+def get_rainbow_fade(rgb_start_color, rgb_end_color, steps):
+    colors = []
+    rgb_start_color = [rgb_start_color[0]/256., rgb_start_color[1]/256., rgb_start_color[2]/256.]
+    rgb_end_color = [rgb_end_color[0]/256., rgb_end_color[1]/256., rgb_end_color[2]/256.]
+    start = rgb_to_hsv(*rgb_start_color)
+    end = rgb_to_hsv(*rgb_end_color)
+
+    diff_h = start[0] - end[0]
+    single_step_h = diff_h / steps
+    diff_s = start[1] - end[1]
+    single_step_s = diff_s / steps
+
+    v = start[2]  # won't change
+
+    for i in range(steps):
+        step_h = i * single_step_h
+        step_s = i * single_step_s
+        rgb = hsv_to_rgb(start[0]-step_h, start[1] - step_s, v)
+        colors.append((rgb[0] *256, rgb[1] * 256, rgb[2] * 256))
+    return colors
+
+
+
+
+

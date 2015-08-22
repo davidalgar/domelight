@@ -48,40 +48,33 @@ panels = [0, 1, 2, 3]
 # -------------------------------------------------------------------------------
 # run pattern
 
-def main():
+def main(parseOpts = False):
     global strip
 
     print '    sending pixels forever (control-c to exit)...'
 
-    strip = utils.init()
+    strip = utils.init(parseOpts)
     print "OK"
 
     while True:
-        for i in range(utils.n_strips):
-            if i % 2 == 0:
-                next_color()
-                fade_strip(i, colors[color])
+        next_color()
+        fade_to(colors[color])
 
 
-def fade_strip(strip_index, color):
+def fade_to(color):
     global strip
-    start_color = strip[strip_index][0]
-    delta_r = (color[0] - start_color[0])
-    delta_g = (color[1] - start_color[1])
-    delta_b = (color[2] - start_color[2])
-    for t in range(0, 11):
-        if t < 10:
-            anim_color = [int(start_color[0] + (delta_r / 10) * t), int(start_color[1] + (delta_g / 10) * t),
-                          int(start_color[2] + (delta_b / 10) * t)]
+    start_color = strip[0][0]
+    anim_colors = utils.get_rainbow_fade(start_color, color, utils.fps)
+    for t in range(utils.fps):
+        if t < utils.fps-1:
+            anim_color = anim_colors[t]
         else:
             anim_color = color
-        for x in range(len(strip[strip_index])):
-            strip[strip_index][x] = anim_color
-            strip[strip_index + 1][x] = anim_color
-        utils.put_pixels(strip, strip_index)
-        utils.put_pixels(strip, strip_index + 1)
-        time.sleep(1 / 20)
-
+        for strip_index in range(len(strip)):
+            for x in range(len(strip[strip_index])):
+                strip[strip_index][x] = anim_color
+            utils.put_pixels(strip, strip_index)
+        time.sleep(1 / utils.fps)
 
 def next_color():
     global color
@@ -89,4 +82,4 @@ def next_color():
 
 
 if __name__ == "__main__":
-    main()
+    main(True)

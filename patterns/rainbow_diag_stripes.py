@@ -74,11 +74,11 @@ def next_color():
     color = (color + 1) % len(colors)
 
 
-def main():
+def main(parseOpts = False):
     print '    sending pixels forever (control-c to exit)...'
     global strip
 
-    strip = utils.init()
+    strip = utils.init(parseOpts)
 
     # first, 5 white stripes
     white_wipe()
@@ -88,4 +88,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(True)

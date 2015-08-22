@@ -48,12 +48,12 @@ panels = [0, 1, 2, 3]
 # -------------------------------------------------------------------------------
 # run pattern
 
-def main():
+def main(parseOpts = False):
     global strip
 
     print '    sending pixels forever (control-c to exit)...'
 
-    strip = utils.init()
+    strip = utils.init(parseOpts)
     print "OK"
 
     while True:
@@ -89,4 +89,4 @@ def next_color():
 
 
 if __name__ == "__main__":
-    main()
+    main(True)
