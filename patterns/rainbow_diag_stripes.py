@@ -16,6 +16,7 @@ from __future__ import division
 
 import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
 import time
@@ -33,19 +34,18 @@ yellow = [255, 255, 5]
 green = [0, 255, 0]
 blue = [15, 15, 200]
 dark_blue = [0, 0, 255]
-elephant_blue = [25,25,50]
+elephant_blue = [25, 25, 50]
 purple = [128, 0, 128]
 off = [0, 0, 0]
 light_red = [100, 0, 0]
 
-
 strip = []
-client = 0
 colors = [red, orange, yellow, green, blue, purple]
 color = 0
 
 panel = 0
 panels = [0, 1, 2, 3]
+
 
 def rainbow_stripes():
     global strip
@@ -58,6 +58,7 @@ def rainbow_stripes():
                 utils.put_pixels(strip, x)
             time.sleep(1 / 10)
 
+
 def white_wipe():
     global strip
     global color
@@ -67,28 +68,22 @@ def white_wipe():
             utils.put_pixels(strip, x)
         time.sleep(1 / 4)
 
+
 def next_color():
     global color
     color = (color + 1) % len(colors)
 
+
 def main():
     print '    sending pixels forever (control-c to exit)...'
-    global client
     global strip
 
-    # get the layout coordinates
-    coordinates = utils.parseOpts()
-
-    # OPC client
-    utils.connectToServer()
-
-    # create the 'strip' variable and initialize it
-    strip = utils.init_strip(off)
+    strip = utils.init()
 
     # first, 5 white stripes
     white_wipe()
 
-    #forever rainbow stripes
+    # forever rainbow stripes
     rainbow_stripes()
 
 

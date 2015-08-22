@@ -1,7 +1,10 @@
 __author__ = 'david.algar'
 
 import optparse
+import os
 import sys
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 import opc
 
 try:
@@ -9,16 +12,23 @@ try:
 except ImportError:
     import simplejson as json
 
-
 n_strips = 8
 strip_length = 64
 
 client = 0
 
-def put_pixels(full_strip, channel):
-    #client.put_pixels(c_strip, channel=channel)
+
+# call this before using any other util functions
+def init():
+    parseOpts()
+    connectToServer()
+    return init_strip()
+
+# wrapper, shouldn't be necessary IRL but for simulator, can help
+def put_pixels(c_strip, channel):
+    #client.put_pixels(c_strip[channel-1], channel=channel)
     pixels = []
-    for strip in full_strip:
+    for strip in c_strip:
         for pixel in strip:
             pixels.append(pixel)
     client.put_pixels(pixels, channel=0)
@@ -33,6 +43,7 @@ def connectToServer():
         print '    WARNING: could not connect to %s' % '127.0.0.1:7890'
     print
     return client
+
 
 def parseOpts():
     parser = optparse.OptionParser()
@@ -63,8 +74,9 @@ def parseOpts():
     return coordinates
 
 
-# init all strips to red
-def init_strip(color, put=False):
+def init_strip(color=None, put=False):
+    if not color:
+        color = [0, 0, 0]
     global n_strips
     global strip_length
     strip = []
@@ -72,6 +84,6 @@ def init_strip(color, put=False):
         strip.append([])
         for y in range(strip_length):
             strip[n].append(color)
-        if(put):
+        if (put):
             put_pixels(strip, n)
     return strip
