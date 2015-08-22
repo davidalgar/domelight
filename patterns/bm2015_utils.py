@@ -66,11 +66,14 @@ def color_diagonal_strip(strip_index, color, pixels):
 
     strip = strips[strip_index]
 
-    print "Turning " + str(strip_index) + " " + str(color)
-
+    print "Turning strip #" + str(strip_index) + " color: " + str(color)
     for i in range(len(strip)):
         for x in range(strip[i][0], strip[i][1]+1):
             substrip = x / 64
             pixel_index = x % 64
+            print "substrip " + str(substrip)
+            print "pixel index " + str(pixel_index)
+            print "len pixels: " + str(len(pixels))
+            print "len subpixels: " + str(len(pixels[substrip]))
             pixels[substrip][pixel_index] = color
     return pixels
