@@ -10,17 +10,17 @@ light_red = [100, 0, 0]
 
 strip = []
 
-def main(parseOpts = False):
+def main(parseOpts = False, looplimit=5):
     global strip
 
     strip = utils.init(parseOpts)
 
-    panel_test()
+    panel_test(looplimit)
 
 
-def panel_test():
+def panel_test(loops):
     global strip
-    for x in range(5):
+    for x in range(loops):
         for i in range(len(strip)):
             strip = utils.color_strip_everyother(light_red)
             for x in range(i+1):

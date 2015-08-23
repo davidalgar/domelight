@@ -6,8 +6,9 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 import opc
-from colorsys import hsv_to_rgb, rgb_to_hsv
+from colorsys import hls_to_rgb, rgb_to_hls
 import math
+
 try:
     import json
 except ImportError:
@@ -22,23 +23,25 @@ fps = 30
 
 
 # call this before using any other util functions
-def init(parse = True):
+def init(parse=True):
     if parse:
         parseOpts()
     else:
-        #TODO we'll come here when using a pattern as a module
+        # TODO we'll come here when using a pattern as a module
         fps = 30
     connectToServer()
     return init_strip()
 
+
 # wrapper, shouldn't be necessary IRL but for simulator, can help
 def put_pixels(c_strip, channel):
-    #client.put_pixels(c_strip[channel-1], channel=channel)
+    # client.put_pixels(c_strip[channel-1], channel=channel)
     pixels = []
     for strip in c_strip:
         for pixel in strip:
             pixels.append(pixel)
     client.put_pixels(pixels, channel=0)
+
 
 def connectToServer():
     global client
@@ -80,6 +83,7 @@ def parseOpts():
             coordinates.append(tuple(item['point']))
     return coordinates
 
+
 # init all strips to red
 def color_strip_everyother(color):
     strip = []
@@ -92,6 +96,7 @@ def color_strip_everyother(color):
                 strip[n].append([0, 0, 0])
         put_pixels(strip, n)
     return strip
+
 
 def init_strip(color=None, put=False):
     if not color:
@@ -107,28 +112,44 @@ def init_strip(color=None, put=False):
             put_pixels(strip, n)
     return strip
 
-def get_rainbow_fade(rgb_start_color, rgb_end_color, steps):
+
+
+# Calculate the colors between two colors, for use in fade
+# converts colors to HLS, and then smooth fades between them
+# HLS gives smoother/better fades than RGB
+def get_rainbow_fade(rgb_start_color, rgb_end_color):
     colors = []
-    rgb_start_color = [rgb_start_color[0]/256., rgb_start_color[1]/256., rgb_start_color[2]/256.]
-    rgb_end_color = [rgb_end_color[0]/256., rgb_end_color[1]/256., rgb_end_color[2]/256.]
-    start = rgb_to_hsv(*rgb_start_color)
-    end = rgb_to_hsv(*rgb_end_color)
+    rgb_start_color = [rgb_start_color[0] / 256., rgb_start_color[1] / 256., rgb_start_color[2] / 256.]
+    rgb_end_color = [rgb_end_color[0] / 256., rgb_end_color[1] / 256., rgb_end_color[2] / 256.]
+    start = rgb_to_hls(*rgb_start_color)
+    end = rgb_to_hls(*rgb_end_color)
 
     diff_h = start[0] - end[0]
-    single_step_h = diff_h / steps
+    num_steps = abs(int(float("{0:.2f}".format(diff_h)) / 0.01))
+    single_step_h = diff_h / num_steps
     diff_s = start[1] - end[1]
-    single_step_s = diff_s / steps
+    single_step_s = diff_s / num_steps
+    diff_v = start[2] - end[2]
+    single_step_v = diff_v / num_steps
 
-    v = start[2]  # won't change
-
-    for i in range(steps):
+    # print "Diff h: "+ str(diff_h)
+    # print "Diff s: "+ str(diff_s)
+    # print "Diff v: "+ str(diff_v)
+    # print "Single step h: "+str(single_step_h)
+    # print "Single step s: "+str(single_step_s)
+    # print "Single step v: "+str(single_step_v)
+    # print "num steps: "+ str(num_steps)
+    for i in range(num_steps):
         step_h = i * single_step_h
         step_s = i * single_step_s
-        rgb = hsv_to_rgb(start[0]-step_h, start[1] - step_s, v)
-        colors.append((rgb[0] *256, rgb[1] * 256, rgb[2] * 256))
+        step_v = i * single_step_v
+        hls_color = (start[0] - step_h, start[1] - step_s, start[2] - step_v)
+        rgb = hls_to_rgb(hls_color[0], hls_color[1], hls_color[2])
+        color = (rgb[0] * 256, rgb[1] * 256, rgb[2] * 256)
+        colors.append(color)
+
     return colors
 
 
-
-
-
+def steps_between_values():
+    return 0
