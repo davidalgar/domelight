@@ -48,7 +48,7 @@ panels = [0, 1, 2, 3]
 # -------------------------------------------------------------------------------
 # run pattern
 
-def main(parseOpts = False, looplimit=0):
+def main(parseOpts = False, looplimit=10):
     global strip
 
     print '    sending pixels forever (control-c to exit)...'
@@ -56,14 +56,8 @@ def main(parseOpts = False, looplimit=0):
     strip = utils.init(parseOpts)
     print "OK"
 
-    if looplimit > 0:
-        for x in range(looplimit):
-            for i in range(len(colors)):
-                next_color()
-                fade_to(colors[color])
-                looplimit -= 1
-    else:
-        while True:
+    for x in range(looplimit):
+        for i in range(len(colors)):
             next_color()
             fade_to(colors[color])
 

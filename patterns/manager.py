@@ -23,8 +23,7 @@ def gethour():
 
 # quick test to identify strips
 while True:
-    panel_test.main(looplimit=3)
-    wooooow.main(looplimit=1)
+    panel_test.main()
 
 while True:
     hr = gethour()

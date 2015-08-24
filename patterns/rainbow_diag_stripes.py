@@ -47,10 +47,10 @@ panel = 0
 panels = [0, 1, 2, 3]
 
 
-def rainbow_stripes():
+def rainbow_stripes(looplimit):
     global strip
     global color
-    while True:
+    for i in range(looplimit * 5):
         for diag_strip in range(5):
             next_color()
             strip = bm2015.color_diagonal_strip(diag_strip, colors[color], strip)
@@ -74,7 +74,7 @@ def next_color():
     color = (color + 1) % len(colors)
 
 
-def main(parseOpts = False):
+def main(parseOpts = False, looplimit = 5):
     print '    sending pixels forever (control-c to exit)...'
     global strip
 
@@ -84,7 +84,7 @@ def main(parseOpts = False):
     white_wipe()
 
     # forever rainbow stripes
-    rainbow_stripes()
+    rainbow_stripes(looplimit)
 
 
 if __name__ == "__main__":
