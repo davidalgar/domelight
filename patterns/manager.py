@@ -12,6 +12,12 @@ import panel_test
 import rainbow_diag_stripes
 import rainbow_fade
 import wooooow
+import slow_full_panel_fade
+import lava_lamp
+import spatial_stripes
+
+#F.U.B.U.
+import temple_test
 
 time = time.time()
 onehour = 1000 * 60 * 60
@@ -23,7 +29,8 @@ def gethour():
 
 # quick test to identify strips
 while True:
-    panel_test.main()
+    #panel_test.main()
+    temple_test.main()
 
 while True:
     hr = gethour()
@@ -34,13 +41,14 @@ while True:
     elif hr == 15 or hr == 2:
         wooooow.main()
     elif hr == 16 or hr == 3:
-        rainbow_fade.main()
+        slow_full_panel_fade.main()
     elif hr == 17 or hr == 4:
-        rainbow_fade.main()
+        lava_lamp.main()
     elif hr == 18 or hr == 5:
-        rainbow_fade.main()
+        spatial_stripes.main()
+        #TODO TODO all the rest of these
     elif hr == 19 or hr == 6:  # 6am, sunrise, 7pm, sunset
-        rainbow_fade.main()
+        temple_test.main()
     elif hr == 20 or hr == 7:
         rainbow_fade.main()
     elif hr == 21 or hr == 8:

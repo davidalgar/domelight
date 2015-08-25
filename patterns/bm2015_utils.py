@@ -1,6 +1,5 @@
 __author__ = 'david.algar'
 
-
 # strip layout:  ( b = panel[x][4] )
 #
 #    a1       a2     a2        a1
@@ -16,6 +15,7 @@ __author__ = 'david.algar'
 #    a1        a2     a2       a1
 #
 
+import time
 # returns a list of panels, size 4
 #   each panel in the list is a list of size 5 sections - 4 corners, followed by the center
 #     each entry is a tuple - (first_led, last_led) representing the range of pixels for that section
@@ -67,19 +67,36 @@ def pixel_grid():
     return grid
 
 
+import pattern_utils as utils
+
 def color_diagonal_strip(strip_index, color, pixels):
     strips = diagonal_strips()
 
     strip = strips[strip_index]
 
-    print "Turning strip #" + str(strip_index) + " color: " + str(color)
-    for i in range(len(strip)):
-        for x in range(strip[i][0], strip[i][1] + 1):
-            substrip = x / 64
-            pixel_index = x % 64
-            print "substrip " + str(substrip)
-            print "pixel index " + str(pixel_index)
-            print "len pixels: " + str(len(pixels))
-            print "len subpixels: " + str(len(pixels[substrip]))
-            pixels[substrip][pixel_index] = color
+    tmp = strip[0][0]
+    ss = tmp / 64
+    pi = tmp % 64
+    anim_colors = utils.get_rainbow_fade(pixels[ss][pi], color)
+    total_wait = len(anim_colors) * (1/utils.fps)
+    desired_time = 1
+    offset = 0
+    if(total_wait < desired_time):
+        offset = (1.0-total_wait) / len(anim_colors) * 1.0
+    print "offset :" +str(offset)
+    for t in range(len(anim_colors)):
+        anim_color = anim_colors[t]
+        for i in range(len(strip)):
+            for x in range(strip[i][0], strip[i][1] + 1):
+                substrip = x / 64
+                pixel_index = x % 64
+                #print "substrip " + str(substrip)
+                #print "pixel index " + str(pixel_index)
+                #print "len pixels: " + str(len(pixels))
+                #print "len subpixels: " + str(len(pixels[substrip]))
+                pixels[substrip][pixel_index] = anim_color
+        for i in range(utils.n_strips):
+            utils.put_pixels(pixels, i)
+        time.sleep(1/utils.fps)
+        time.sleep(offset)
     return pixels

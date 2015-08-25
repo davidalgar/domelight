@@ -40,7 +40,7 @@ off = [0, 0, 0]
 light_red = [100, 0, 0]
 
 strip = []
-colors = [red, orange, yellow, green, blue, purple]
+colors = [red, orange, yellow, green, blue, purple, off, off]
 color = 0
 
 panel = 0
@@ -56,7 +56,14 @@ def rainbow_stripes(looplimit):
             strip = bm2015.color_diagonal_strip(diag_strip, colors[color], strip)
             for x in range(len(strip)):
                 utils.put_pixels(strip, x)
-            time.sleep(1 / 10)
+            time.sleep(1 / utils.fps)
+        #for diag_strip in reversed(range(5)):
+        #    prev_color()
+        #    strip = bm2015.color_diagonal_strip(diag_strip, colors[color], strip)
+        #    for x in range(len(strip)):
+        #        utils.put_pixels(strip, x)
+        #    time.sleep(1 / utils.fps)
+
 
 
 def white_wipe():
@@ -68,24 +75,23 @@ def white_wipe():
             utils.put_pixels(strip, x)
         time.sleep(1 / 4)
 
-
 def next_color():
     global color
     color = (color + 1) % len(colors)
 
+def prev_color():
+    global color
+    color = (color - 1) % len(colors)
 
 def main(parseOpts = False, looplimit = 5):
-    print '    sending pixels forever (control-c to exit)...'
+    print '    sending pixels forever  ~~ (control-c to exit)...'
     global strip
 
     strip = utils.init(parseOpts)
-
-    # first, 5 white stripes
-    white_wipe()
 
     # forever rainbow stripes
     rainbow_stripes(looplimit)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":\
     main(True)

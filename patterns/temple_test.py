@@ -25,61 +25,15 @@ import optparse
 
 import opc
 import color_utils
+import pattern_utils as utils
 
 try:
     import json
 except ImportError:
     import simplejson as json
 
-
-# -------------------------------------------------------------------------------
-# command line
-
-parser = optparse.OptionParser()
-parser.add_option('-l', '--layout', dest='layout',
-                  action='store', type='string',
-                  help='layout file')
-parser.add_option('-s', '--server', dest='server', default='127.0.0.1:7890',
-                  action='store', type='string',
-                  help='ip and port of server')
-# 32fps default will get through 1 strip of 64 in exactly 2s
-parser.add_option('-f', '--fps', dest='fps', default=32,
-                  action='store', type='int',
-                  help='frames per second')
-
-options, args = parser.parse_args()
-
-if not options.layout:
-    parser.print_help()
-    print
-    print 'ERROR: you must specify a layout file using --layout'
-    print
-    sys.exit(1)
-
-
-# -------------------------------------------------------------------------------
-# parse layout file
-
-print
-print '    parsing layout file'
-print
-
-coordinates = []
-for item in json.load(open(options.layout)):
-    if 'point' in item:
-        coordinates.append(tuple(item['point']))
-
-
 # -------------------------------------------------------------------------------
 # connect to server
-
-client = opc.Client(options.server)
-if client.can_connect():
-    print '    connected to %s' % options.server
-else:
-    # can't connect, but keep running in case the server appears later
-    print '    WARNING: could not connect to %s' % options.server
-print
 
 
 # -------------------------------------------------------------------------------
@@ -98,128 +52,52 @@ off = [0, 0, 0]
 
 light_red = [100, 0, 0]
 
-
-def put_pixels(c_strip, channel):
-    #client.put_pixels(c_strip, channel=channel)
-    pixels = []
-    for single_strip in strip:
-        for pixel in single_strip:
-            pixels.append(pixel)
-    client.put_pixels(pixels, channel=0)
-
-
-# -------------------------------------------------------------------------------
-# setup strip model
-
-# strip layout:
-#
-#    b                 b
-#       2           1
-#          a     a
-#
-#          a     a
-#       4           3
-#     b                 b
-#
-#
-n_strips = 8
-strip_length = 64
-
-strip = []
-
-# init all strips to red
-def init_strip(color):
-    global strip
-    for n in range(n_strips):
-        strip.append([])
-        for y in range(strip_length):
-            strip[n].append(color)
-        put_pixels(strip[n], n)
-
-# order of strips to fade when fading
-progression = [1, 4, 0, 5, 2, 3, 7, 6]
-colors = [red, orange, yellow, green, blue, purple]
-color = 0
-
-panel = 0
-panels = [0, 1, 2, 3]
-
-init_strip(white)
-
 # -------------------------------------------------------------------------------
 # run pattern
 
-print '    sending pixels forever (control-c to exit)...'
-
-def rainbow_fade():
-    global strip
-    while True:
-        next_color()
-        for i in range(len(strip)):
-            fade_strip(progression[i], colors[color])
-
-
-def fade_strip(strip_index, color):
-    global strip
-    for t in range(0,100):
-        for x in range(len(strip[strip_index])):
-            strip[strip_index][x] = color
-            put_pixels(strip[strip_index], strip_index)
-            time.sleep(1 / options.fps)
-
-
-def next_color():
-    global color
-    color = (color + 1) % len(colors)
-
-#rainbow_fade()
 
 # ----------------------------------------------------------
 # showcase pattern
 
+strip = []
+
 def show_tiger():
     tiger_strips = [6,7]
-    show_panel(tiger_strips, white)
-    time.sleep(1/2)
     show_panel(tiger_strips, orange)
 
 
 def show_elephant():
     elephant_strips = [2, 3]
-    show_panel(elephant_strips, white)
-    time.sleep(1/2)
     show_panel(elephant_strips, elephant_blue)
 
 
 def show_nautilus():
     nautilus_strips = [4,5]
-    show_panel(nautilus_strips, white)
-    time.sleep(1/2)
     show_panel(nautilus_strips, dark_blue)
 
 
 def show_octopus():
     octopus_strips = [0, 1]
-    show_panel(octopus_strips, white)
-    time.sleep(1/2)
     show_panel(octopus_strips, red)
 
 
 def show_panel(panel_strips, color):
     global strip
-    global strip_length
-    global n_strips
-    for n in range(n_strips):
-        for x in range(strip_length):
+    for n in range(utils.n_strips):
+        for x in range(utils.strip_length):
             if n in panel_strips:
                 strip[n][x] = color
             else:
                 strip[n][x] = off
-        put_pixels(strip[n], 0)
+        utils.put_pixels(strip, 0)
 
 
-def panel_spotlight():
-    while True:
+def main(parseOpts = False, looplimit=5):
+    global strip
+
+    strip = utils.init(parseOpts)
+
+    for x in range(looplimit):
         show_tiger()
         time.sleep(5)
         show_elephant()
@@ -229,4 +107,7 @@ def panel_spotlight():
         show_nautilus()
         time.sleep(5)
 
-panel_spotlight()
+
+if __name__ == "__main__":
+    while True:
+        main(True)

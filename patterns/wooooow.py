@@ -76,10 +76,12 @@ def fade_to(color):
             utils.put_pixels(strip, strip_index)
         time.sleep(1/utils.fps)
 
+
 def next_color():
     global color
     color = (color + 1) % len(colors)
 
 
 if __name__ == "__main__":
-    main(True)
+    while True:
+        main(True)

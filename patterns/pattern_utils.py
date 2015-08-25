@@ -21,6 +21,7 @@ client = 0
 
 fps = 30
 
+layoutFile = "/Users/david.algar/bm2015.json"
 
 # call this before using any other util functions
 def init(parse=True):
@@ -77,8 +78,11 @@ def parseOpts():
         print
         sys.exit(1)
 
+    return []
+
+def getCoordinates(layout):
     coordinates = []
-    for item in json.load(open(options.layout)):
+    for item in json.load(open(layoutFile)):
         if 'point' in item:
             coordinates.append(tuple(item['point']))
     return coordinates
@@ -124,8 +128,13 @@ def get_rainbow_fade(rgb_start_color, rgb_end_color):
     start = rgb_to_hls(*rgb_start_color)
     end = rgb_to_hls(*rgb_end_color)
 
+    if start == end:
+        return colors
+
     diff_h = start[0] - end[0]
-    num_steps = abs(int(float("{0:.2f}".format(diff_h)) / 0.01))
+    num_steps = abs(int(float("{0:.2f}".format(diff_h)) / 0.005))
+    if(num_steps == 0):
+        num_steps = 1
     single_step_h = diff_h / num_steps
     diff_s = start[1] - end[1]
     single_step_s = diff_s / num_steps

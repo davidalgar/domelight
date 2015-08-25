@@ -30,55 +30,8 @@ except ImportError:
 
 import opc
 import color_utils
+import pattern_utils as utils
 
-
-#-------------------------------------------------------------------------------
-# command line
-
-parser = optparse.OptionParser()
-parser.add_option('-l', '--layout', dest='layout',
-                    action='store', type='string',
-                    help='layout file')
-parser.add_option('-s', '--server', dest='server', default='127.0.0.1:7890',
-                    action='store', type='string',
-                    help='ip and port of server')
-parser.add_option('-f', '--fps', dest='fps', default=20,
-                    action='store', type='int',
-                    help='frames per second')
-
-options, args = parser.parse_args()
-
-if not options.layout:
-    parser.print_help()
-    print
-    print 'ERROR: you must specify a layout file using --layout'
-    print
-    sys.exit(1)
-
-
-#-------------------------------------------------------------------------------
-# parse layout file
-
-print
-print '    parsing layout file'
-print
-
-coordinates = []
-for item in json.load(open(options.layout)):
-    if 'point' in item:
-        coordinates.append(tuple(item['point']))
-
-
-#-------------------------------------------------------------------------------
-# connect to server
-
-client = opc.Client(options.server)
-if client.can_connect():
-    print '    connected to %s' % options.server
-else:
-    # can't connect, but keep running in case the server appears later
-    print '    WARNING: could not connect to %s' % options.server
-print
 
 
 #-------------------------------------------------------------------------------
@@ -121,14 +74,22 @@ def pixel_color(t, coord, ii, n_pixels):
 #-------------------------------------------------------------------------------
 # send pixels
 
-print '    sending pixels forever (control-c to exit)...'
-print
+def main(parseOpts = False, looplimit=10):
+    coordinates = utils.getCoordinates("/home/pi/bm2015.json")
 
-n_pixels = len(coordinates)
-start_time = time.time()
-while True:
-    t = time.time() - start_time
-    pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-    client.put_pixels(pixels, channel=0)
-    time.sleep(1 / options.fps)
+    client = utils.connectToServer()
 
+    print '    sending pixels forever (control-c to exit)...'
+    print
+
+    n_pixels = utils.strip_length * utils.n_strips
+    start_time = time.time()
+    for i in range(looplimit * utils.fps):
+        t = time.time() - start_time
+        pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+        client.put_pixels(pixels, channel=0)
+        time.sleep(1 / utils.fps)
+
+if __name__ == "__main__":
+    while True:
+        main(True)
