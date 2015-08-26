@@ -9,15 +9,15 @@
 import time
 
 import panel_test
-import rainbow_diag_stripes
-import rainbow_fade
-import wooooow
-import slow_full_panel_fade
 import lava_lamp
 import spatial_stripes
 
 #F.U.B.U.
 import temple_test
+import slow_full_panel_fade
+import rainbow_diag_stripes
+import rainbow_fade
+import wooooow
 
 time = time.time()
 onehour = 1000 * 60 * 60
