@@ -21,7 +21,8 @@ client = 0
 
 fps = 30
 
-layoutFile = "/Users/david.algar/bm2015.json"
+#layoutFile = "/Users/david.algar/bm2015.json"
+layoutFile = "/home/pi/bm2015.json"
 
 # call this before using any other util functions
 def init(parse=True):
