@@ -83,7 +83,7 @@ def prev_color():
     global color
     color = (color - 1) % len(colors)
 
-def main(parseOpts = False, looplimit = 5):
+def main(parseOpts = False, looplimit = 100000):
     print '    sending pixels forever  ~~ (control-c to exit)...'
     global strip
 

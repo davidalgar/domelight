@@ -48,7 +48,7 @@ panels = [0, 1, 2, 3]
 # -------------------------------------------------------------------------------
 # run pattern
 
-def main(parseOpts = False, looplimit=10):
+def main(parseOpts = False, looplimit=100000):
     global strip
 
     print '    sending pixels forever (control-c to exit)...'

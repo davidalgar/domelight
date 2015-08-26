@@ -117,4 +117,4 @@ def main(parseOpts=False, looplimit=10):
 
 if __name__ == "__main__":
     while(True):
-        main(True)
+        main(True, 100000)

@@ -83,7 +83,6 @@ def color_diagonal_strip(strip_index, color, pixels):
     offset = 0
     if(total_wait < desired_time):
         offset = (1.0-total_wait) / len(anim_colors) * 1.0
-    print "offset :" +str(offset)
     for t in range(len(anim_colors)):
         anim_color = anim_colors[t]
         for i in range(len(strip)):

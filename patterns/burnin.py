@@ -5,14 +5,21 @@
 
 import opc, time, math
 
-numLEDs = 512
-client = opc.Client('localhost:7890')
 
-t = 0
+def main(parseOpts = False, looplimit=10):
+    numLEDs = 512
+    client = opc.Client('localhost:7890')
 
-while True:
-    t += 0.4
-    brightness = int(min(1, 1.25 + math.sin(t)) * 255)
-    frame = [ (brightness, brightness, brightness) ] * numLEDs
-    client.put_pixels(frame)
-    time.sleep(0.05) 
+    t = 0
+
+    for i in range(looplimit):
+        t += 0.4
+        brightness = int(min(1, 1.25 + math.sin(t)) * 255)
+        frame = [ (brightness, brightness, brightness) ] * numLEDs
+        client.put_pixels(frame)
+        time.sleep(0.05)
+
+
+if __name__ == "__main__":
+    while True:
+        main(True, 100000)
