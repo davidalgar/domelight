@@ -53,7 +53,7 @@ def main(parseOpts = False, looplimit=10):
 
     print '    sending pixels forever (control-c to exit)...'
 
-    strip = utils.init(parseOpts)
+    strip = utils.init_strip(off)
     print "OK"
 
     for x in range(looplimit):
