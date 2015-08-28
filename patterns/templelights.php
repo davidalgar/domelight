@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<div class=\"notice\">";
     echo "<p>";
     shell_exec("pkill python");
-    $cmd = "python $script.py";
+    $cmd = "python /var/www/patterns/$script.py";
     echo shell_exec($cmd);
     echo "</p>";
     echo "</div>";
