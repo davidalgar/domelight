@@ -63,7 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<div class=\"notice\">";
     echo "<p>";
     shell_exec("pkill python");
-    $cmd = "python /var/www/patterns/$script.py";
+    echo "SCRIPT: $script";
+    $cmd = "python /var/www/patterns/${script}.py -l bm2015.json > /dev/null 2>/dev/null &";
+    echo "CMD: $cmd";
     echo shell_exec($cmd);
     echo "</p>";
     echo "</div>";
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $PATTERNS = array(
                 "Rainbow Fade" => "script",
-                "TEST" => "panel_test.py",
+                "TEST" => "panel_test",
                 "Rainbw Fade" => "rainbow_fade",
                 "Burnin" => "burnin",
                 "Blue" => "color_blue",

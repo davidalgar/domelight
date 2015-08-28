@@ -47,7 +47,7 @@ def put_pixels(c_strip, channel):
 
 def connectToServer():
     global client
-    client = opc.Client('127.0.0.1:7890')
+    client = opc.Client('192.168.1.6:7890')
     if client.can_connect():
         print '    connected to %s' % '127.0.0.1:7890'
     else:
