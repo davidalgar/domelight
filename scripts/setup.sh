@@ -15,7 +15,8 @@ fi
 #chown -R pi github
 
 # copy fcserver-rpi to /usr/bin
-
+ln -s /home/pi/github/domelight/patterns /var/www/
+ln /home/pi/github/domelight/patterns/templelights.php /var/www/templelights.php
 
 # setup cron job to run launcher.sh on boot
 result=`crontab -l > newcron`
