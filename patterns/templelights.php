@@ -9,13 +9,11 @@
         }
         button.action {
             display:block;
-            margin-top: 15px;
-            margin-left: auto;
-            margin-right: auto;
-            width: 200px;
+            width: 100%;
             text-align:center;
-            padding: 10px;
-
+            padding: 30px;
+            text-size: 22px;
+            border: none;
         }
         .color_blue {
             background-color: #0066FF;
@@ -63,16 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<div class=\"notice\">";
     echo "<p>";
     shell_exec("pkill python");
-    echo "SCRIPT: $script";
     $cmd = "python /var/www/patterns/${script}.py -l bm2015.json > /dev/null 2>/dev/null &";
-    echo "CMD: $cmd";
+    echo "Running pattern -=[ <b> $script</b> ]=-";
     echo shell_exec($cmd);
     echo "</p>";
     echo "</div>";
 } ?>
 
-
-<div style="margin-left:auto;margin-right:auto; width: 400px">
 
     <form action="templelights.php" method="POST">
 
@@ -109,6 +104,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ?>
     </form>
 
-</div>
 </body>
 </html>
