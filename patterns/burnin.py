@@ -5,10 +5,12 @@
 
 import opc, time, math
 
+import pattern_utils
 
 def main(parseOpts = False, looplimit=10):
     numLEDs = 512
-    client = opc.Client('localhost:7890')
+    client = pattern_utils.connectToServer()
+
 
     t = 0
 

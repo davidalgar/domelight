@@ -2,10 +2,12 @@
 
 # Open Pixel Control client: All lights to solid white
 
-import opc, time
+
+import time
+import pattern_utils
 
 numLEDs = 512
-client = opc.Client('localhost:7890')
+client = pattern_utils.connectToServer()
 
 black = [ (0,0,0) ] * numLEDs
 color = [ (0, 0, 255) ] * numLEDs

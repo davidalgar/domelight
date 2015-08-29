@@ -4,8 +4,10 @@
 
 import opc, time
 
+import pattern_utils
 numLEDs = 512
-client = opc.Client('localhost:7890')
+client = pattern_utils.connectToServer()
+
 
 black = [ (0,0,0) ] * numLEDs
 white = [ (255,255,255) ] * numLEDs
